@@ -1,0 +1,47 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos compilados
+*.so
+
+# Distribución / build
+build/
+dist/
+*.egg-info/
+
+# Variables de entorno
+.env
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# VSCode
+.vscode/
+
+# Pytest
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
