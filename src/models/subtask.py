@@ -28,7 +28,7 @@ class Subtask(Base):
     task_id = Column(
         "TaskId",
         Integer,
-        ForeignKey("Task.TaskId"),
+        ForeignKey("Tasks.TaskId"),
         nullable = False
     )
 
