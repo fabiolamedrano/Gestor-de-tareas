@@ -7,7 +7,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from config.database import Base
 
-
 class Tag(Base):
     __tablename__ = "Tags"
 
@@ -27,7 +26,7 @@ class Tag(Base):
     user_id = Column(
         "UserId",
         Integer,
-        ForeignKey("Users.UserId"),
+        ForeignKey("Users.UserID"),
         nullable = False
     )
 
@@ -40,5 +39,6 @@ class Tag(Base):
     tasks = relationship(
         "Task",
         secondary = "TaskTags",
-        back_populates = "tags"
+        back_populates="tags"
     )
+

@@ -2,7 +2,7 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
-    Datetime
+    DateTime
 )
 
 from sqlalchemy.orm import relationship
@@ -33,11 +33,11 @@ class User(Base):
 
     created_at = Column(
         "UserCreatedAt",
-        Datetime,
+        DateTime,
         nullable = False
     )
 
-    task = relationship(
+    tasks = relationship(
         "Task",
         back_populates = "user"
     )

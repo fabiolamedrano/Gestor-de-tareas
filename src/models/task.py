@@ -8,7 +8,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from config.database import Base
 
-
 class Task(Base):
     __tablename__ = "Tasks"
 
@@ -73,7 +72,7 @@ class Task(Base):
     user_id = Column(
         "UserId",
         Integer,
-        ForeignKey("Users.UserId"),
+        ForeignKey("Users.UserID"),
         nullable = False
     )
 

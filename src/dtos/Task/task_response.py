@@ -8,6 +8,7 @@ class TaskResponseDTO(BaseModel):
     description: str
     priority: str
     status: str
+    progress: int
     due_date: datetime
     created_at: datetime
     updated_at: datetime
