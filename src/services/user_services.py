@@ -8,7 +8,7 @@ from dtos.User.user_create import UserCreateDTO
 from dtos.User.user_update import UserUpdateDTO
 from models.user import User
 from repositories.user_repository import UserRepository
-
+from config.security import hash_password
 
 class UserService:
 
@@ -42,7 +42,7 @@ class UserService:
         # Create data
         data = User(
             email=dto.email,
-            password=dto.password,
+            password=hash_password(dto.password),
             created_at=datetime.now(timezone.utc)
         )
 
@@ -63,7 +63,7 @@ class UserService:
         data = User(
             id=dto.id,
             email=dto.email,
-            password=dto.password
+            password=hash_password(dto.password)
         )
 
         user = UserRepository.update_user(data=data, db=db)

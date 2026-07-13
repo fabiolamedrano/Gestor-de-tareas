@@ -8,16 +8,16 @@ from models.task import Task
 from models.task_tag import TaskTag
 from models.subtask import Subtask
 
-from routers import user_router, task_router, tag_router, subtask_router
+from routers import user_router, task_router, tag_router, subtask_router, auth_router
 
 app = FastAPI(title="Gestor de Tareas", version="1.0.0")
-
-Base.metadata.create_all(bind=engine)
 
 app.include_router(user_router.router)
 app.include_router(task_router.router)
 app.include_router(tag_router.router)
 app.include_router(subtask_router.router)
+app.include_router(auth_router.router)
+
 
 @app.get("/")
 def root():

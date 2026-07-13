@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
 class TaskCreateDTO(BaseModel):
-    user_id: int
+    user_id: Optional[int] = None  
     title: str = Field(min_length=1, max_length=250)
     description: str = Field(default=None, max_length=500)
     priority: str = Field(default="media")
