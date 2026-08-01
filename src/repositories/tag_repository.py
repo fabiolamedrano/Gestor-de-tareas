@@ -42,3 +42,7 @@ class TagRepository:
         db.delete(tag)
         db.commit()
         return tag
+
+    @staticmethod
+    def find_tag_by_name(user_id: int, name: str, db: Session):
+        return db.query(Tag).filter(Tag.user_id == user_id, Tag.name == name).first()

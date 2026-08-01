@@ -7,11 +7,27 @@ from datetime import datetime, timezone
 from dtos.Task.task_create import TaskCreateDTO
 from dtos.Task.task_update import TaskUpdateDTO
 from models.task import Task
+from models.tag import Tag
 from repositories.task_repository import TaskRepository
 from repositories.user_repository import UserRepository
+from repositories.tag_repository import TagRepository
 
 
 class TaskService:
+
+    @staticmethod
+    def _resolve_tags(user_id: int, tag_names: list, db: Session):
+        """Busca cada etiqueta por nombre; si no existe, la crea."""
+        tags = []
+        for raw_name in tag_names:
+            name = raw_name.strip()
+            if not name:
+                continue
+            tag = TagRepository.find_tag_by_name(user_id=user_id, name=name, db=db)
+            if not tag:
+                tag = TagRepository.create_tag(data=Tag(user_id=user_id, name=name), db=db)
+            tags.append(tag)
+        return tags
 
     @staticmethod
     def get_tasks(user_id: int, db: Session):
@@ -53,7 +69,15 @@ class TaskService:
             updated_at=datetime.now(timezone.utc)
         )
 
-        return TaskRepository.create_task(data=data, db=db)
+        task = TaskRepository.create_task(data=data, db=db)
+
+        # Asignar etiquetas (crear las que no existan)
+        if dto.tag_names:
+            task.tags = TaskService._resolve_tags(user_id=dto.user_id, tag_names=dto.tag_names, db=db)
+            db.commit()
+            db.refresh(task)
+
+        return task
 
     @staticmethod
     def update_task(dto: TaskUpdateDTO, db: Session):
@@ -86,7 +110,15 @@ class TaskService:
             updated_at=datetime.now(timezone.utc)
         )
 
-        return TaskRepository.update_task(data=data, db=db)
+        updated_task = TaskRepository.update_task(data=data, db=db)
+
+        # Actualizar etiquetas (reemplaza las asignaciones actuales)
+        if dto.tag_names is not None:
+            updated_task.tags = TaskService._resolve_tags(user_id=task.user_id, tag_names=dto.tag_names, db=db)
+            db.commit()
+            db.refresh(updated_task)
+
+        return updated_task
 
     @staticmethod
     def delete_task(task_id: int, db: Session):
@@ -99,21 +131,3 @@ class TaskService:
             )
 
         return task
-    
-    @staticmethod
-    def recalculate_progress(task_id: int, db: Session):
-        task = TaskRepository.find_task(task_id=task_id, db=db)
-
-        if not task:
-            return
-
-        total = len(task.subtasks)
-        if total == 0:
-            progress = 0
-        else:
-            completed = sum(1 for s in task.subtasks if s.is_completed)
-            progress = int((completed / total) * 100)
-
-        task.progress = progress
-        db.commit()
-        db.refresh(task)

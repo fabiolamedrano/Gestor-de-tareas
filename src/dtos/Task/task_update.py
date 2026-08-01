@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import List
+
 
 class TaskUpdateDTO(BaseModel):
     id: int
@@ -8,3 +10,4 @@ class TaskUpdateDTO(BaseModel):
     priority: str
     status: str
     due_date: datetime = None
+    tag_names: List[str] = []
