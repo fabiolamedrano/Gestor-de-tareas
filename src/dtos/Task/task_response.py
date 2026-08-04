@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from dtos.Tag.tag_response import TagResponseDTO
 from dtos.Subtask.subtask_response import SubtaskResponseDTO
@@ -14,7 +14,7 @@ class TaskResponseDTO(BaseModel):
     priority: str
     status: str
     progress: int
-    due_date: datetime
+    due_date: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
     tags: List[TagResponseDTO] = []
