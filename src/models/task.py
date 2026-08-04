@@ -90,5 +90,6 @@ class Task(Base):
 
     subtasks = relationship(
         "Subtask",
-        back_populates = "task"
+        back_populates="task",
+        cascade="all, delete-orphan"
     )
